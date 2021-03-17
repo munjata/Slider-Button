@@ -82,11 +82,14 @@ class SliderButton extends StatefulWidget {
   }) : assert(buttonSize <= height);
 
   @override
-  _SliderButtonState createState() => _SliderButtonState();
+  _SliderButtonState createState() => _SliderButtonState(isRtl);
 }
 
 class _SliderButtonState extends State<SliderButton> {
+  final bool isRtl;
   bool flag;
+
+  _SliderButtonState(this.isRtl);
 
   @override
   void initState() {
@@ -109,90 +112,96 @@ class _SliderButtonState extends State<SliderButton> {
         height: widget.height,
         width: widget.width,
         decoration: BoxDecoration(
-            color: widget.disable ? Colors.grey.shade700 : widget.backgroundColor,
-            borderRadius: BorderRadius.circular(widget.radius)),
+          color: widget.disable ? Colors.grey.shade700 : widget.backgroundColor,
+          borderRadius: BorderRadius.circular(widget.radius),
+        ),
         alignment: Alignment.centerLeft,
         child: Stack(
-          alignment: Alignment.centerLeft,
+          alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
           children: <Widget>[
-            Container(
-              alignment: widget.alignLabel,
-              child: widget.shimmer && !widget.disable
-                  ? Shimmer.fromColors(
-                      baseColor: widget.disable ? Colors.grey : widget.baseColor,
-                      highlightColor: widget.highlightedColor,
-                      child: widget.label,
-                    )
-                  : widget.label,
-            ),
-            widget.disable
-                ? Tooltip(
-                    verticalOffset: 50,
-                    message: 'Button is disabled',
-                    child: Container(
-                      width: widget.width - (widget.height),
-                      height: widget.height,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(
-                        left: (widget.height - widget.buttonSize) / 2,
-                      ),
-                      child: widget.child ??
-                          Container(
-                            height: widget.buttonSize,
-                            width: widget.buttonSize,
-                            decoration: BoxDecoration(boxShadow: [
-                              widget.boxShadow,
-                            ], color: Colors.grey, borderRadius: BorderRadius.circular(widget.radius)),
-                            child: Center(child: widget.icon),
-                          ),
-                    ),
-                  )
-                : Dismissible(
-                    key: Key("cancel"),
-                    direction: widget.isRtl ? DismissDirection.endToStart : DismissDirection.startToEnd,
-                    dismissThresholds: {DismissDirection.startToEnd: widget.dismissThresholds},
-
-                    ///gives direction of swipping in argument.
-                    onDismissed: (dir) async {
-                      setState(() {
-                        if (widget.dismissible) {
-                          flag = false;
-                        } else {
-                          flag = !flag;
-                        }
-                      });
-
-                      widget.action();
-                      if (widget.vibrationFlag && await Vibration.hasVibrator()) {
-                        try {
-                          Vibration.vibrate(duration: 200);
-                        } catch (e) {
-                          print(e);
-                        }
-                      }
-                    },
-                    child: Container(
-                      width: widget.width - (widget.height),
-                      height: widget.height,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(
-                        left: (widget.height - widget.buttonSize) / 2,
-                      ),
-                      child: widget.child ??
-                          Container(
-                            height: widget.buttonSize,
-                            width: widget.buttonSize,
-                            decoration: BoxDecoration(boxShadow: [
-                              widget.boxShadow,
-                            ], color: widget.buttonColor, borderRadius: BorderRadius.circular(widget.radius)),
-                            child: Center(child: widget.icon),
-                          ),
-                    ),
-                  ),
+            _buildColorContainer(),
             Container(
               child: SizedBox.expand(),
             ),
+            widget.disable ? _buildTooltip() : _buildDismissible(),
           ],
+        ),
+      );
+
+  Container _buildColorContainer() => Container(
+        alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
+        child: widget.shimmer && !widget.disable
+            ? Shimmer.fromColors(
+                baseColor: widget.disable ? Colors.grey : widget.baseColor,
+                highlightColor: widget.highlightedColor,
+                child: widget.label,
+              )
+            : widget.label,
+      );
+  Tooltip _buildTooltip() => Tooltip(
+        verticalOffset: 50,
+        message: 'Button is disabled',
+        child: Container(
+          width: widget.width - (widget.height),
+          height: widget.height,
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(
+            left: (widget.height - widget.buttonSize) / 2,
+          ),
+          child: widget.child ??
+              Container(
+                height: widget.buttonSize,
+                width: widget.buttonSize,
+                decoration: BoxDecoration(boxShadow: [
+                  widget.boxShadow,
+                ], color: Colors.grey, borderRadius: BorderRadius.circular(widget.radius)),
+                child: Center(child: widget.icon),
+              ),
+        ),
+      );
+
+  Dismissible _buildDismissible() => Dismissible(
+        key: Key("cancel"),
+        direction: widget.isRtl ? DismissDirection.endToStart : DismissDirection.startToEnd,
+        dismissThresholds: {DismissDirection.startToEnd: widget.dismissThresholds},
+
+        ///gives direction of swipping in argument.
+        onDismissed: (dir) async {
+          setState(() {
+            if (widget.dismissible) {
+              flag = false;
+            } else {
+              flag = !flag;
+            }
+          });
+
+          widget.action();
+          if (widget.vibrationFlag && await Vibration.hasVibrator()) {
+            try {
+              Vibration.vibrate(duration: 200);
+            } catch (e) {
+              print(e);
+            }
+          }
+        },
+        child: Container(
+          width: widget.width - (widget.height),
+          height: widget.height,
+          alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
+          padding: EdgeInsets.only(
+            left: (widget.height - widget.buttonSize) / 2,
+          ),
+          child: widget.child ??
+              Container(
+                height: widget.buttonSize,
+                width: widget.buttonSize,
+                decoration: BoxDecoration(
+                  boxShadow: [widget.boxShadow],
+                  color: widget.buttonColor,
+                  borderRadius: BorderRadius.circular(widget.radius),
+                ),
+                child: Center(child: widget.icon),
+              ),
         ),
       );
 }
