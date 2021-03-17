@@ -70,22 +70,11 @@ class Shimmer extends StatefulWidget {
       this.direction = ShimmerDirection.ltr,
       this.loop = 0})
       : gradient = LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.centerRight,
-            colors: [
-              baseColor,
-              baseColor,
-              highlightColor,
-              baseColor,
-              baseColor
-            ],
-            stops: [
-              0.0,
-              0.35,
-              0.5,
-              0.65,
-              1.0
-            ]),
+          begin: Alignment.topLeft,
+          end: Alignment.centerRight,
+          colors: [baseColor, baseColor, highlightColor, baseColor, baseColor],
+          stops: [0.0, 0.35, 0.5, 0.65, 1.0],
+        ),
         super(key: key);
 
   @override
@@ -94,11 +83,9 @@ class Shimmer extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(new DiagnosticsProperty<Gradient>('gradient', gradient,
-        defaultValue: null));
+    properties.add(new DiagnosticsProperty<Gradient>('gradient', gradient, defaultValue: null));
     properties.add(new EnumProperty<ShimmerDirection>('direction', direction));
-    properties.add(new DiagnosticsProperty<Duration>('period', period,
-        defaultValue: null));
+    properties.add(new DiagnosticsProperty<Duration>('period', period, defaultValue: null));
   }
 }
 
@@ -149,8 +136,7 @@ class _Shimmer extends SingleChildRenderObjectWidget {
   final ShimmerDirection direction;
   final Gradient gradient;
 
-  _Shimmer({Widget child, this.percent, this.direction, this.gradient})
-      : super(child: child);
+  _Shimmer({Widget child, this.percent, this.direction, this.gradient}) : super(child: child);
 
   @override
   _ShimmerFilter createRenderObject(BuildContext context) {
