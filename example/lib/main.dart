@@ -15,36 +15,41 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SliderButton(
-          isRtl: false,
-          action: () {
-            ///Do something here OnSlide
-            print("working");
-          },
-
-          ///Put label over here
-          label: Text(
-            // "ߊ߬ ߕߍ߬ߙߍ߲߬ߕߍ߫",
-            "Slide to Pay",
-            style: TextStyle(color: Color(0xff4a4a4a), fontWeight: FontWeight.w500, fontSize: 17),
-          ),
-          icon: Center(
-              child: Icon(
-            Icons.power_settings_new,
-            color: Colors.white,
-            size: 40.0,
-            semanticLabel: 'Text to announce in accessibility modes',
-          )),
-
-          ///Change All the color and size from here.
-          width: 230,
-          radius: 10,
-          buttonColor: Color(0xffd60000),
-          backgroundColor: Color(0xff534bae),
-          highlightedColor: Colors.white,
-          baseColor: Colors.red,
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: _buildSliderButton(),
         ),
       ),
     );
   }
+
+  SliderButton _buildSliderButton() => SliderButton(
+        isRtl: true,
+        action: () {
+          ///Do something here OnSlide
+          print("working");
+        },
+
+        ///Put label over here
+        label: Text(
+          // "ߊ߬ ߕߍ߬ߙߍ߲߬ߕߍ߫",
+          "Slide to Pay",
+          style: TextStyle(color: Color(0xff4a4a4a), fontWeight: FontWeight.w500, fontSize: 17),
+        ),
+        icon: Center(
+            child: Icon(
+          Icons.power_settings_new,
+          color: Colors.white,
+          size: 40.0,
+          semanticLabel: 'Text to announce in accessibility modes',
+        )),
+
+        ///Change All the color and size from here.
+        width: 230,
+        radius: 10,
+        buttonColor: Color(0xffd60000),
+        backgroundColor: Color(0xff534bae),
+        highlightedColor: Colors.white,
+        baseColor: Colors.red,
+      );
 }

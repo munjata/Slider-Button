@@ -162,7 +162,7 @@ class _SliderButtonState extends State<SliderButton> {
 
   Dismissible _buildDismissible() => Dismissible(
         key: Key("cancel"),
-        direction: widget.isRtl ? DismissDirection.endToStart : DismissDirection.startToEnd,
+        direction: DismissDirection.startToEnd,
         dismissThresholds: {DismissDirection.startToEnd: widget.dismissThresholds},
 
         ///gives direction of swipping in argument.
