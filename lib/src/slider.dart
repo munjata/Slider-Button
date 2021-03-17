@@ -129,7 +129,7 @@ class _SliderButtonState extends State<SliderButton> {
       );
 
   Container _buildColorContainer() => Container(
-        alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: isRtl ? Alignment.centerLeft : Alignment.centerRight,
         child: widget.shimmer && !widget.disable
             ? Shimmer.fromColors(
                 baseColor: widget.disable ? Colors.grey : widget.baseColor,

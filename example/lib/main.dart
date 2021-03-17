@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: SliderButton(
-          isRtl: true,
+          isRtl: false,
           action: () {
             ///Do something here OnSlide
             print("working");
@@ -24,7 +24,8 @@ class MainApp extends StatelessWidget {
 
           ///Put label over here
           label: Text(
-            "Slide to cancel !",
+            // "ߊ߬ ߕߍ߬ߙߍ߲߬ߕߍ߫",
+            "Slide to Pay",
             style: TextStyle(color: Color(0xff4a4a4a), fontWeight: FontWeight.w500, fontSize: 17),
           ),
           icon: Center(
